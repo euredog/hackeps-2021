@@ -1,9 +1,8 @@
 import numpy as np
 import neat
-from decimal import Decimal
-from src import visualize
+from src.algorithm import visualize
 
-from src.Algorithm import AnomalyDetectionAlgorithmInterface
+from src.algorithm.Algorithm import AnomalyDetectionAlgorithmInterface
 
 
 class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
