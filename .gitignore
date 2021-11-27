@@ -1,5 +1,5 @@
 # Default ignored files
-sensor-anomaly-detectetion/venv
+sensoranomalydetection/venv
 .DS_Store
 .idea
 venv
