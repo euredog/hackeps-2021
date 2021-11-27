@@ -1,0 +1,15 @@
+digraph {
+	node [fontsize=9 height=0.2 shape=circle width=0.2]
+	water_value [fillcolor=lightgray shape=box style=filled]
+	air_value [fillcolor=lightgray shape=box style=filled]
+	amoni_value [fillcolor=lightgray shape=box style=filled]
+	is_drift [fillcolor=lightblue style=filled]
+	is_dangerous_drift [fillcolor=lightblue style=filled]
+	12 [fillcolor=white style=filled]
+	air_value -> is_drift [color=green penwidth=0.10946411339939342 style=solid]
+	air_value -> is_dangerous_drift [color=green penwidth=0.2832948310683215 style=solid]
+	amoni_value -> is_dangerous_drift [color=green penwidth=0.3348510956429241 style=solid]
+	amoni_value -> 12 [color=green penwidth=0.39753626517115903 style=solid]
+	12 -> is_drift [color=green penwidth=0.8682173143234229 style=solid]
+	12 -> is_dangerous_drift [color=green penwidth=0.33920054705616864 style=solid]
+}
