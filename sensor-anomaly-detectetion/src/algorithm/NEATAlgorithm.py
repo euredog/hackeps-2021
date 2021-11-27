@@ -1,8 +1,8 @@
 import numpy as np
 import neat
-from src.algorithm import visualize
 
-from src.algorithm.Algorithm import AnomalyDetectionAlgorithmInterface
+
+from .Algorithm import AnomalyDetectionAlgorithmInterface
 
 
 class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
@@ -13,9 +13,6 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 
 	def __init__(self, config_route: str):
 		self.config_route = config_route
-
-	def visualize(self, winner):
-		visualize.draw_net(self.genome_config, genome=winner, filename="winner_network")
 
 	def generation(self, genomes, config):
 		self.genome_config = config
@@ -57,7 +54,7 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 		p.add_reporter(stats)
 
 		self.winner = p.run(self.generation, 10)
-		self.visualize(self.winner)
+
 
 	def predict(self, inputs: list) -> (bool, bool):
 		raise NotImplementedError

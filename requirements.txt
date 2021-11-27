@@ -5,3 +5,6 @@ pytz==2021.3
 six==1.16.0
 neat==0.4.1
 neat-python==0.92
+graphviz==0.16
+matplotlib==3.3.4
+
