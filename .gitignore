@@ -1,0 +1,4 @@
+# Default ignored files
+sensor-anomaly-detectetion/venv
+.DS_Store
+.idea
