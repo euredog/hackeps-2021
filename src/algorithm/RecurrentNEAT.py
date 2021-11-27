@@ -7,7 +7,7 @@ from src.algorithm.Algorithm import AnomalyDetectionAlgorithmInterface
 from src.algorithm.visualize import draw_net
 
 
-class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
+class RecurrentNEAT(AnomalyDetectionAlgorithmInterface):
 	training_inputs = None
 	training_outputs = None
 	config = None
@@ -42,7 +42,7 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 
 		for _, g in genomes:
 			# Create a neural network
-			net = neat.nn.FeedForwardNetwork.create(g, config)
+			net = neat.nn.RecurrentNetwork.create(g, config)
 			nets.append(net)
 			# Create a genome with fitness 0.0
 			g.fitness = 0
@@ -67,7 +67,7 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 		max_fitness = max([g.fitness for g in ge])
 		for g in ge:
 			if g.fitness == max_fitness:
-				self.winner_net = neat.nn.FeedForwardNetwork.create(g, self.config)
+				self.winner_net = neat.nn.RecurrentNetwork.create(g, self.config)
 				self.save_genome_into_file(g)
 				self.visualize_net(g)
 
@@ -83,7 +83,7 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 		p.add_reporter(stats)
 
 		self.winner = p.run(self.generation, 2000)
-		self.winner_net = neat.nn.FeedForwardNetwork.create(self.winner, self.config)
+		self.winner_net = neat.nn.RecurrentNetwork.create(self.winner, self.config)
 		self.save_genome_into_file(self.winner)
 		self.visualize_net(self.winner)
 
@@ -91,7 +91,7 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 		if self.winner_net is None:
 			try:
 				self.load_genome()
-				self.winner_net = neat.nn.FeedForwardNetwork.create(self.winner, self.config)
+				self.winner_net = neat.nn.RecurrentNetwork.create(self.winner, self.config)
 			except FileNotFoundError:
 				print("ERROR: Algorithm not yet trained")
 				return

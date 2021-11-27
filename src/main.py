@@ -1,6 +1,7 @@
 import pandas as pd
 
 from algorithm.NEATAlgorithm import NEATAlgorithm
+from algorithm.RecurrentNEAT import RecurrentNEAT
 
 
 def get_input_data(water_route: str, air_file: str, amoni_file: str):
@@ -20,5 +21,4 @@ def get_input_data(water_route: str, air_file: str, amoni_file: str):
 if __name__ in "__main__":
 	model = NEATAlgorithm("algorithm/neat-config.txt")
 	inputs, outputs = get_input_data("../data/aigua.csv", "../data/aire.csv", "../data/amoni.csv")
-	# model.fit(inputs, outputs)
-	print(model.predict(inputs[0]), outputs[0])
+	model.fit(inputs, outputs)
