@@ -40,6 +40,9 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 					if elem == self.training_outputs[row_index][out_index]:
 						ge[ind].fitness += 1
 
+		for ind, net in enumerate(nets):
+			ge[ind].fitness = ge[ind].fitness / len(self.training_outputs)
+
 	def fit(self, inputs: np.ndarray, outputs: np.ndarray) -> None:
 		self.training_inputs = inputs
 		self.training_outputs = outputs
