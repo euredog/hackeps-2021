@@ -8,19 +8,20 @@ from src.algorithm.visualize import draw_net
 
 
 class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
-	training_inputs = None
-	training_outputs = None
-	config = None
-	winner = None
-	winner_net = None
 
 	def __init__(self, config_route: str):
+		"""Initialize variables"""
 		self.config_route = config_route
 		self.config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet,
 		                                 neat.DefaultStagnation, self.config_route)
+		self.training_inputs = None
+		self.training_outputs = None
+		self.winner = None
+		self.winner_net = None
 
 	def visualize_net(self, g):
-		draw_net(self.config, genome=g, filename="winner_genome", node_names={
+		"""Draw the neural net on the file genome.svg"""
+		draw_net(self.config, genome=g, filename="genome", node_names={
 			0: "is_drift",
 			1: "is_dangerous_drift",
 			-1: "water_value",
@@ -29,14 +30,17 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 		})
 
 	def save_genome_into_file(self, g):
+		"""Save a genome into a file called winner.pkl"""
 		with open("winner.pkl", "wb") as f:
 			pickle.dump(g, f)
 
 	def load_genome(self):
+		"""Load a genome from a file called winner.pkl"""
 		with open("winner.pkl", "rb") as f:
 			self.winner = pickle.load(f)
 
 	def generation(self, genomes, config):
+		"""The function executed in every generation"""
 		nets = []
 		ge = []
 
@@ -50,20 +54,23 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 
 		fitness_max = 0
 		rows = 0
+		# For all available training inputs, use a network to guess the output
 		for row_index, row in enumerate(self.training_inputs):
 			for ind, net in enumerate(nets):
 				net_outputs = net.activate(row)
 				parsed_net_outputs = [1 if elem >= 0.5 else 0 for elem in net_outputs]
 				for out_index, elem in enumerate(parsed_net_outputs):
 					if elem == self.training_outputs[row_index][out_index]:
+						# If we got the input right, have more fitness
 						ge[ind].fitness += 1
 			rows += 1
 			fitness_max += 2
-		print(rows, fitness_max, "Rowsmax")
 
+		# Transform the fitness into a percentage
 		for g in ge:
 			g.fitness = (g.fitness * 100) / fitness_max
 
+		# Save the winner of the current generation into the file
 		max_fitness = max([g.fitness for g in ge])
 		for g in ge:
 			if g.fitness == max_fitness:
@@ -72,6 +79,7 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 				self.visualize_net(g)
 
 	def fit(self, inputs: np.ndarray, outputs: np.ndarray) -> None:
+		"""Given inputs and their outputs, train a NN"""
 		self.training_inputs = inputs
 		self.training_outputs = outputs
 
@@ -82,12 +90,13 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 		stats = neat.StatisticsReporter()
 		p.add_reporter(stats)
 
-		self.winner = p.run(self.generation, 2000)
+		self.winner = p.run(self.generation, 20)
 		self.winner_net = neat.nn.FeedForwardNetwork.create(self.winner, self.config)
 		self.save_genome_into_file(self.winner)
 		self.visualize_net(self.winner)
 
 	def predict(self, inputs: list) -> (bool, bool):
+		"""Once the NN is trained, with a given input predict the output"""
 		if self.winner_net is None:
 			try:
 				self.load_genome()
