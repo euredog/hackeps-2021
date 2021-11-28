@@ -8,3 +8,4 @@ ammonium_path = os.path.join(data_path, 'amoni.csv')
 
 # Neat config
 neat_config = 'algorithm/neat-config.txt'
+num_generations = 20

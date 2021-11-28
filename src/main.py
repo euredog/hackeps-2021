@@ -6,6 +6,7 @@ import pandas as pd
 
 from algorithm.NEATAlgorithm import NEATAlgorithm
 from config import neat_config, water_path, air_path, ammonium_path
+from sklearn.model_selection import train_test_split
 
 
 def get_input_data(water_route: str, air_file: str, ammonium_file: str):
@@ -33,5 +34,12 @@ def get_input_data(water_route: str, air_file: str, ammonium_file: str):
 
 if __name__ == '__main__':
 	inputs, outputs = get_input_data(water_path, air_path, ammonium_path)
+	X_train, X_test, y_train, y_test = train_test_split(inputs, outputs, test_size=0.33, random_state=42)
 	model = NEATAlgorithm(neat_config)
-	model.fit(inputs, outputs)
+	model.fit(X_train, y_train)
+	accuracy = 0
+	for index, value in enumerate(X_test):
+		prediction = model.predict(value)
+		if prediction in y_test[index].astype(int):
+			accuracy += 1
+	print(f'Evaluation accuracy: {accuracy / X_test.shape[0]}')

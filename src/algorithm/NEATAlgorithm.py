@@ -5,6 +5,7 @@ import neat
 
 from src.algorithm.Algorithm import AnomalyDetectionAlgorithmInterface
 from src.algorithm.visualize import draw_net
+from src.config import num_generations
 
 
 class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
@@ -90,7 +91,7 @@ class NEATAlgorithm(AnomalyDetectionAlgorithmInterface):
 		stats = neat.StatisticsReporter()
 		p.add_reporter(stats)
 
-		self.winner = p.run(self.generation, 20)
+		self.winner = p.run(self.generation, num_generations)
 		self.winner_net = neat.nn.FeedForwardNetwork.create(self.winner, self.config)
 		self.save_genome_into_file(self.winner)
 		self.visualize_net(self.winner)
