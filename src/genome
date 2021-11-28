@@ -5,6 +5,7 @@ digraph {
 	amoni_value [fillcolor=lightgray shape=box style=filled]
 	is_drift [fillcolor=lightblue style=filled]
 	is_dangerous_drift [fillcolor=lightblue style=filled]
-	amoni_value -> is_drift [color=green penwidth=0.7848742099785074 style=solid]
-	amoni_value -> is_dangerous_drift [color=green penwidth=0.7919614102009968 style=solid]
+	amoni_value -> is_drift [color=green penwidth=0.7229250560686189 style=solid]
+	amoni_value -> is_dangerous_drift [color=green penwidth=0.9374194813545139 style=solid]
+	air_value -> is_dangerous_drift [color=red penwidth=0.1736790887275278 style=solid]
 }
